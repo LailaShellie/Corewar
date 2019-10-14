@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-SRC = error.c parse.c read_files.c vm_main.c
+SRC = error.c parse.c read_files.c vm_main.c start_game.c cursor.c
 
 OBJ = $(SRC:.c=.o)
 
@@ -21,15 +21,15 @@ LIB = libft/libft.a
 all: $(NAME)
 
 $(NAME): $(LIB) $(OBJ)
-	gcc -Wall -Wextra -Werror -o $(NAME) $(LIB) $(OBJ)
+	@gcc -Wall -Wextra -Werror -o $(NAME) $(LIB) $(OBJ)
 $(LIB):
-	make -C ./libft
+	@make -C ./libft
 %.o: vm/%.c corewar.h
-	gcc -c -I corewar.h $<
+	@gcc -c -I corewar.h $<
 clean:
-	make clean -C ./libft
-	rm -rf $(OBJ)
+	@make clean -C ./libft
+	@rm -rf $(OBJ)
 fclean: clean
-	make fclean -C ./libft
-	rm -rf $(NAME)
+	@make fclean -C ./libft
+	@rm -rf $(NAME)
 re: fclean all

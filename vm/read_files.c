@@ -26,55 +26,49 @@ int			check_file_format(char *str)
 	return (1);
 }
 
-int			choose_num(t_player *player, int fl_n)
+int			choose_num(t_player *player)
 {
 	int 	i;
 
-	if (fl_n < 0)
+	i = -1;
+	while (++i < MAX_PLAYERS)
 	{
-		i = -1;
-		while (++i < MAX_PLAYERS)
-		{
-			if (player[i].size < 0)
-				return (i);
-		}
-		return (-1);
+		if (player[i].size < 0)
+			return (i);
 	}
-	else if (fl_n > 0 && fl_n <= MAX_PLAYERS)
-		return (fl_n - 1);
 	return (-1);
 }
 
-int			parse_all(int fd, t_player *player, int fl_n)
+int			parse_all(int fd, t_player *player)
 {
 	int 	i;
 
-	if ((i = choose_num(player, fl_n)) < 0)
+	if ((i = choose_num(player)) < 0)
 		return (error(WRONG_NUM));
-	if (!(get_header(&player[i], fd)))
+	if (!(get_header(fd)))
 		return (0);
 	if (!(get_name_or_comment(&player[i], fd, GET_NAME)))
 		return (0);
-	if (!(get_null(&player[i], fd)))
+	if (!(get_null(fd)))
 		return (0);
 	if (!(get_size(&player[i], fd)))
 		return (0);
 	if (!(get_name_or_comment(&player[i], fd, GET_COMMENT)))
 		return (0);
-	if (!(get_null(&player[i], fd)))
+	if (!(get_null(fd)))
 		return (0);
 	if (!(get_code(&player[i], fd)))
 		return (0);
 	return (1);
 }
 
-int			read_player(t_player *player, int fl_n, char *str)
+int			read_player(t_player *player, char *str)
 {
 	int 	fd;
 
 	if ((fd = open(str, O_RDONLY)) < 0)
 		return (error(CANT_OPEN_FILE));
-	if (!(parse_all(fd, player, fl_n)))
+	if (!(parse_all(fd, player)))
 	{
 		close(fd);
 		return (0);
@@ -86,27 +80,22 @@ int			read_player(t_player *player, int fl_n, char *str)
 int			read_files(t_player *player, int ac, char **av)
 {
 	int 	i;
-	int 	fl_n;
 
-	fl_n = -1;
 	i = 0;
 	while (++i < ac)
 	{
-		if (fl_n < 0 && !ft_strcmp(av[i], "-n") && i + 1 < ac)
+		if (!ft_strcmp(av[i], "-n") && i + 1 < ac)
 		{
-			fl_n = ft_atoi(av[++i]);
-			if (fl_n > MAX_PLAYERS)
-				return (error(WRONG_NUM));
+			++i;
 			continue ;
 		}
-		if (check_file_format(av[i]) && fl_n <= MAX_PLAYERS)
+		if (check_file_format(av[i]))
 		{
-			if (!(read_player(player, fl_n, av[i])))
+			if (!(read_player(player, av[i])))
 				return (0);
-			fl_n = -1;
 		}
 		else
 			return (error(BAD_FILE_FORMAT));
 	}
-	return ((fl_n <= 0 || fl_n > MAX_PLAYERS) ? 1 : error(BAD_FLAG));
+	return (1);
 }

@@ -24,33 +24,28 @@ int		get_size(t_player *player, int fd)
 	while (++i < 4)
 		size[i] = buf[3 - i];
 	player->size = *((int *)size);
-	printf("%d\n", player->size);
-//	if (player->size > CHAMP_MAX_SIZE)
-//		return (error(INV_CHAP_SIZE));
+	if (player->size > CHAMP_MAX_SIZE)
+		return (error(INV_CHAP_SIZE));
 	return (1);
 }
 
-int		get_header(t_player *player, int fd)
+int		get_header(int fd)
 {
 	int 	i;
 	char	buf[4];
+	char	str[4];
 
 	i = -1;
-	if (!(player->header = (char *)ft_memalloc(4)))
-		return (0);
 	if (read(fd, buf, 4) < 0)
-	{
-		free(player->header);
 		return (error(READ_ERROR));
-	}
 	while (++i < 4)
-		player->header[i] = buf[3 - i];
-	if (*((int *)player->header) != COREWAR_EXEC_MAGIC)
+		str[i] = buf[3 - i];
+	if (*((int *)str) != COREWAR_EXEC_MAGIC)
 		return (error(BAD_HEADER));
 	return (1);
 }
 
-int		get_null(t_player *player, int fd)
+int		get_null(int fd)
 {
 	char 	buf[4];
 
@@ -80,7 +75,6 @@ int		get_code(t_player *player, int fd)
 
 int		get_name_or_comment(t_player *player, int fd, int fl)
 {
-	int 	i;
 	int 	ret;
 	char 	buf1[129];
 	char	buf2[2049];
@@ -92,7 +86,6 @@ int		get_name_or_comment(t_player *player, int fd, int fl)
 		buf1[ret] = 0;
 		if (!(player->name = ft_strdup(buf1)))
 			return (error(INVALID_MALLOC));
-		printf("%s\n", player->name);
 	}
 	else if (fl == GET_COMMENT)
 	{
@@ -101,7 +94,6 @@ int		get_name_or_comment(t_player *player, int fd, int fl)
 		buf2[ret] = 0;
 		if (!(player->comment = ft_strdup(buf2)))
 			return (error(INVALID_MALLOC));
-		printf("%s\n", player->comment);
 	}
 	return (1);
 }

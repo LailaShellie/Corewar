@@ -33,25 +33,59 @@
 # define NO_NULL "No null bytes"
 # define INV_CHAP_SIZE "Too big champion"
 
+typedef struct		s_cursor
+{
+	int				id;
+	int 			pos;
+	int				carry;
+	int				op;
+	int				last_live_cycle;
+	int				cycles_to_op;
+	int				bytes_to_next;
+	int				*reg;
+	struct s_cursor	*next;
+
+}					t_cursor;
+
 typedef struct		s_player
 {
-	char			*header;
+	int 			num;
 	char 			*name;
 	char 			*comment;
 	int				size;
 	char 			*code;
 }					t_player;
 
+typedef struct		s_main
+{
+	t_player		*player;
+	t_cursor		*cursor;
+	int 			cursor_ids;
+	char 			*field;
+	int 			num_of_players;
+	int				last_player_live;
+	int				live_num;
+	int				check_num;
+	int				cycle;
+	int				cycles_to_die;
+}					t_main;
+
 int					error(char *str);
-void				free_player(t_player *player);
+void				free_main(t_main *main);
 void				show(t_player *player);
 
 int					read_files(t_player *player, int ac, char **av);
 
-int					get_header(t_player *player, int fd);
-int					get_null(t_player *player, int fd);
+int					get_header(int fd);
+int					get_null(int fd);
 int					get_name_or_comment(t_player *player, int fd, int fl);
 int					get_size(t_player *player, int fd);
 int					get_code(t_player *player, int fd);
+
+int					start_game(t_main *main);
+
+void				set_cursor(t_cursor **first, t_cursor *cursor);
+t_cursor			*new_cursor();
+void				show_cursors(t_cursor *cursor);
 
 #endif

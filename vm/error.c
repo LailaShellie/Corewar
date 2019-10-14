@@ -26,6 +26,19 @@ void	show(t_player *player)
 	}
 }
 
+void	free_cursor(t_cursor *cursor)
+{
+	t_cursor *tmp;
+
+	while (cursor)
+	{
+		tmp = cursor;
+		free(cursor->reg);
+		cursor = cursor->next;
+		free(tmp);
+	}
+}
+
 void	free_player(t_player *player)
 {
 	int 	i;
@@ -33,8 +46,6 @@ void	free_player(t_player *player)
 	i = -1;
 	while (++i < 4)
 	{
-		if (player[i].header)
-			free(player[i].header);
 		if (player[i].name)
 			free(player[i].name);
 		if (player[i].comment)
@@ -43,6 +54,14 @@ void	free_player(t_player *player)
 			free(player[i].code);
 	}
 	free(player);
+}
+
+void	free_main(t_main *main)
+{
+	free_player(main->player);
+	free_cursor(main->cursor);
+	free(main->field);
+	free(main);
 }
 
 int		error(char *str)
