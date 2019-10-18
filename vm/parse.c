@@ -20,12 +20,12 @@ int		get_size(t_player *player, int fd)
 
 	i = -1;
 	if (read(fd, buf, 4) < 0)
-		return (error(READ_ERROR));
+		return (ft_error(READ_ERROR));
 	while (++i < 4)
 		size[i] = buf[3 - i];
 	player->size = *((int *)size);
 	if (player->size > CHAMP_MAX_SIZE)
-		return (error(INV_CHAP_SIZE));
+		return (ft_error(INV_CHAP_SIZE));
 	return (1);
 }
 
@@ -37,11 +37,11 @@ int		get_header(int fd)
 
 	i = -1;
 	if (read(fd, buf, 4) < 0)
-		return (error(READ_ERROR));
+		return (ft_error(READ_ERROR));
 	while (++i < 4)
 		str[i] = buf[3 - i];
 	if (*((int *)str) != COREWAR_EXEC_MAGIC)
-		return (error(BAD_HEADER));
+		return (ft_error(BAD_HEADER));
 	return (1);
 }
 
@@ -50,9 +50,9 @@ int		get_null(int fd)
 	char 	buf[4];
 
 	if (read(fd, buf, 4) < 0)
-		return (error(READ_ERROR));
+		return (ft_error(READ_ERROR));
 	if (*((int *)buf) != 0)
-		return (error(NO_NULL));
+		return (ft_error(NO_NULL));
 	return (1);
 }
 
@@ -62,14 +62,14 @@ int		get_code(t_player *player, int fd)
 	int 	ret;
 
 	if ((ret = read(fd, buf, player->size)) < 0)
-		return (error(READ_ERROR));
+		return (ft_error(READ_ERROR));
 	buf[ret] = 0;
 	if (ret != player->size)
-		return (error(INV_CHAP_SIZE));
-	if (!(player->code = ft_strdup(buf)))
-		return (error(INVALID_MALLOC));
+		return (ft_error(INV_CHAP_SIZE));
+	if (!(player->code = ft_strndup(buf, ret)))
+		return (ft_error(INVALID_MALLOC));
 	if (read(fd, buf, 1) > 0)
-		return (error(INV_CHAP_SIZE));
+		return (ft_error(INV_CHAP_SIZE));
 	return (1);
 }
 
@@ -82,18 +82,18 @@ int		get_name_or_comment(t_player *player, int fd, int fl)
 	if (fl == GET_NAME)
 	{
 		if ((ret = read(fd, buf1, 128)) < 0)
-			return (error(READ_ERROR));
+			return (ft_error(READ_ERROR));
 		buf1[ret] = 0;
 		if (!(player->name = ft_strdup(buf1)))
-			return (error(INVALID_MALLOC));
+			return (ft_error(INVALID_MALLOC));
 	}
 	else if (fl == GET_COMMENT)
 	{
 		if ((ret = read(fd, buf2, 2048)) < 0)
-			return (error(READ_ERROR));
+			return (ft_error(READ_ERROR));
 		buf2[ret] = 0;
 		if (!(player->comment = ft_strdup(buf2)))
-			return (error(INVALID_MALLOC));
+			return (ft_error(INVALID_MALLOC));
 	}
 	return (1);
 }

@@ -51,9 +51,9 @@ int			main(int ac, char **av)
 
 	main = 0;
 	if (ac < 2)
-		return (error(NO_ARG));
+		return (ft_error(NO_ARG));
 	if (!(init_game(&main)))
-		return (error(INVALID_MALLOC));
+		return (ft_error(INVALID_MALLOC));
 	if (!(read_files(main->player, ac, av)))
 	{
 		free_main(main);
@@ -61,6 +61,9 @@ int			main(int ac, char **av)
 	}
 	count_players(main);
 	start_game(main);
+//	dump_memory_64(main->field);
+	printf("Contestant %d, \"%s\", has won !\n", main->last_player_live, main->player[main->last_player_live - 1].name);
+	dump_memory_64(main->field);
 	free_main(main);
 	return (0);
 }

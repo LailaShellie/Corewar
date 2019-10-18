@@ -44,7 +44,7 @@ int			parse_all(int fd, t_player *player)
 	int 	i;
 
 	if ((i = choose_num(player)) < 0)
-		return (error(WRONG_NUM));
+		return (ft_error(WRONG_NUM));
 	if (!(get_header(fd)))
 		return (0);
 	if (!(get_name_or_comment(&player[i], fd, GET_NAME)))
@@ -67,7 +67,7 @@ int			read_player(t_player *player, char *str)
 	int 	fd;
 
 	if ((fd = open(str, O_RDONLY)) < 0)
-		return (error(CANT_OPEN_FILE));
+		return (ft_error(CANT_OPEN_FILE));
 	if (!(parse_all(fd, player)))
 	{
 		close(fd);
@@ -95,7 +95,7 @@ int			read_files(t_player *player, int ac, char **av)
 				return (0);
 		}
 		else
-			return (error(BAD_FILE_FORMAT));
+			return (ft_error(BAD_FILE_FORMAT));
 	}
 	return (1);
 }

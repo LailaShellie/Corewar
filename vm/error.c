@@ -26,17 +26,20 @@ void	show(t_player *player)
 	}
 }
 
-void	free_cursor(t_cursor *cursor)
+void	free_cursor(t_main *main)
 {
-	t_cursor *tmp;
+	t_cursor	*tmp;
+	t_cursor	*c;
 
-	while (cursor)
+	c = main->cursor;
+	while (c)
 	{
-		tmp = cursor;
-		free(cursor->reg);
-		cursor = cursor->next;
-		free(tmp);
+		tmp = c->next;
+		free(c->reg);
+		free(c);
+		c = tmp;
 	}
+	main->cursor = 0;
 }
 
 void	free_player(t_player *player)
@@ -59,12 +62,12 @@ void	free_player(t_player *player)
 void	free_main(t_main *main)
 {
 	free_player(main->player);
-	free_cursor(main->cursor);
+	free_cursor(main);
 	free(main->field);
 	free(main);
 }
 
-int		error(char *str)
+int		ft_error(char *str)
 {
 	ft_putendl(str);
 	return (0);

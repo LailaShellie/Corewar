@@ -18,7 +18,7 @@ int 		paste_code(t_main *main, t_player *player, int pos)
 
 	i = -1;
 	while (++i < player->size)
-		main->field[pos % MEM_SIZE] = player->code[i];
+		main->field[(pos + i) % MEM_SIZE] = player->code[i];
 	return (1);
 }
 
@@ -74,6 +74,6 @@ int 		start_game(t_main *main)
 {
 	introduce(main->player);
 	set_players(main);
-//	show_cursors(main->cursor);
+	start_fight(main);
 	return (1);
 }
