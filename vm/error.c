@@ -12,18 +12,18 @@
 
 #include "../corewar.h"
 
-void	show(t_player *player)
+int 	is_number(char *str)
 {
-	int 	i;
+	int		i;
 
-	i = -1;
-	while (++i < 4)
+	i = 0;
+	while (str[i])
 	{
-		if (player[i].name)
-			printf("%s\n", player[i].name);
-		if (player[i].comment)
-			printf("%s\n", player[i].comment);
+		if (str[i] < '0' || str[i] > '9')
+			return (0);
+		++i;
 	}
+	return (1);
 }
 
 void	free_cursor(t_main *main)
@@ -44,19 +44,20 @@ void	free_cursor(t_main *main)
 
 void	free_player(t_player *player)
 {
-	int 	i;
+	t_player *tmp;
 
-	i = -1;
-	while (++i < 4)
+	while (player)
 	{
-		if (player[i].name)
-			free(player[i].name);
-		if (player[i].comment)
-			free(player[i].comment);
-		if (player[i].code)
-			free(player[i].code);
+		if (player->name)
+			free(player->name);
+		if (player->comment)
+			free(player->comment);
+		if (player->code)
+			free(player->code);
+		tmp = player;
+		player = player->next;
+		free(tmp);
 	}
-	free(player);
 }
 
 void	free_main(t_main *main)

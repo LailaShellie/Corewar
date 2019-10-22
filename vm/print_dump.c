@@ -27,28 +27,49 @@ void		print_hex_int(int i)
 		i /= 16;
 	}
 	j = 4;
-	write(1, "0x", 2);
+	printf("0x");
 	while (--j >= 0)
-		write(1, &out[j], 1);
-	write(1, " : ", 3);
+		printf("%c", out[j]);
+	printf(" : ");
 }
 
-void		print_hex_char(unsigned char octet, int i)
+int 	find_cursor(t_cursor *c, int i)
 {
-	char	*c;
+	while (c)
+	{
+		if (c->pos == i)
+			return (1);
+		c = c->next;
+	}
+	return (0);
+}
 
-	c = "0123456789abcdef";
+void		print_hex_char(unsigned char octet, int i, t_cursor *c)
+{
+	char	*s;
+
+	s = "0123456789abcdef";
 	if (i && i % 64 == 0)
 	{
-		write(1, "\n", 1);
+		printf("\n");
 		print_hex_int(i);
 	}
-	write(1, &c[octet / 16], 1);
-	write(1, &c[octet % 16], 1);
-	write(1, " ", 1);
+	if (!(find_cursor(c, i)))
+	{
+		if (s[octet / 16] == '0')
+			printf("0");
+		printf("%x ", octet);
+	}
+	else
+	{
+		if (s[octet / 16] == '0')
+			printf("\033[031;43m0\033[0m");
+		printf("\033[031;43m%x\033[0m ", octet);
+	}
+	//write(1, &c[octet % 16], 1);
 }
 
-int 		dump_memory_64(char *field)
+int 		dump_memory_64(char *field, t_cursor *c)
 {
 	int 	i;
 
@@ -56,9 +77,11 @@ int 		dump_memory_64(char *field)
 	print_hex_int(i);
 	while (i < MEM_SIZE)
 	{
-		print_hex_char((unsigned char)field[i], i);
+		print_hex_char((unsigned char)field[i], i, c);
 		++i;
 	}
-	write(1, "\n", 1);
+//	write(1, "\n", 1);
+	printf("\n");
 	return (1);
 }
+

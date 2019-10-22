@@ -35,9 +35,9 @@
 
 # define MAX_OPS 16
 
-# define M_REG 2
-# define M_DIR 1
-# define M_IND 3
+# define DIR 1
+# define REG 2
+# define IND 3
 
 # define NUM_ARG 0
 # define TYPE_BYTE 1
@@ -55,7 +55,6 @@ typedef struct		s_cursor
 	int				op;
 	int				last_live_cycle;
 	int				action;
-	int				bytes_to_next;
 	int				*reg;
 	struct s_cursor	*next;
 
@@ -68,6 +67,7 @@ typedef struct		s_player
 	char 			*comment;
 	int				size;
 	char 			*code;
+	struct s_player	*next;
 }					t_player;
 
 typedef struct		s_main
@@ -75,6 +75,8 @@ typedef struct		s_main
 	t_player		*player;
 	t_cursor		*cursor;
 	int 			cursor_ids;
+	int 			dump;
+	int 			n_flag;
 	char 			*field;
 	int 			num_of_players;
 	int				last_player_live;
@@ -85,12 +87,17 @@ typedef struct		s_main
 	int				cycles_to_die;
 }					t_main;
 
+int					set_player_fl(t_main *m, t_player *new);
+int					set_player(t_main *m, t_player *new);
+void				swap_players(t_player *a, t_player *b);
+
 int					ft_error(char *str);
 void				free_main(t_main *main);
-void				show(t_player *player);
+int 				is_number(char *str);
 void				free_cursor(t_main *main);
 
-int					read_files(t_player *player, int ac, char **av);
+int					read_files(t_main *m, int ac, char **av);
+int 				manage_n(t_main *m, int ac, char **av);
 
 int					get_header(int fd);
 int					get_null(int fd);
@@ -104,24 +111,22 @@ void				set_cursor(t_cursor **first, t_cursor *cursor);
 t_cursor			*new_cursor();
 void				show_cursors(t_cursor *cursor);
 
-int 				dump_memory_64(char *field);
+int 				dump_memory_64(char *field, t_cursor *c);
 
 int 				check(t_main *main);
 void				start_fight(t_main *main);
 
 void				do_op(t_main *m, t_cursor *c);
 int 				c_p(int pos);
-int 				choose_pos(int tmp, int dir_size);
-void				move_next(t_cursor *c, unsigned char type, int *global);
 
-void				do_live(t_main *main, t_cursor *c);
-void				do_ld(t_main *main, t_cursor *c);
-void				do_st(t_main *m, t_cursor *c);
-void				do_add(t_main *m, t_cursor *c);
-void				do_sub(t_main *m, t_cursor *c);
+void				get_args(char *args, unsigned char byte);
+int					ft_size(char type, t_cursor *c);
+
+int 				read_mem(t_main *m, int pos, int size);
+
+void				do_live(t_main *m, t_cursor *c);
 void				do_zjmp(t_main *m, t_cursor *c);
-void				do_lfork(t_main *m, t_cursor *c);
 void				do_fork(t_main *m, t_cursor *c);
-void				do_aff(t_main *m, t_cursor *c);
+
 
 #endif

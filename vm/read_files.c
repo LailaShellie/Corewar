@@ -26,49 +26,60 @@ int			check_file_format(char *str)
 	return (1);
 }
 
-int			choose_num(t_player *player)
+t_player		*choose_player(t_main *m)
 {
-	int 	i;
+	t_player	*new;
 
-	i = -1;
-	while (++i < MAX_PLAYERS)
+	if (m->n_flag == -1)
 	{
-		if (player[i].size < 0)
-			return (i);
+		new = ft_memalloc(sizeof(t_player));
+		new->num = -1;
+		if (!(set_player(m, new)))
+			return (0);
 	}
-	return (-1);
+	else if (m->n_flag > 0 && m->n_flag <= MAX_PLAYERS)
+	{
+		new = ft_memalloc(sizeof(t_player));
+		new->num = m->n_flag - 1;
+		m->n_flag = -1;
+		if (!(set_player_fl(m, new)))
+			return (0);
+	}
+	else
+		return (0);
+	return (new);
 }
 
-int			parse_all(int fd, t_player *player)
+int			parse_all(int fd, t_main *m)
 {
-	int 	i;
+	t_player *new;
 
-	if ((i = choose_num(player)) < 0)
-		return (ft_error(WRONG_NUM));
+	if (!(new = choose_player(m)))
+		return (0);
 	if (!(get_header(fd)))
 		return (0);
-	if (!(get_name_or_comment(&player[i], fd, GET_NAME)))
+	if (!(get_name_or_comment(new, fd, GET_NAME)))
 		return (0);
 	if (!(get_null(fd)))
 		return (0);
-	if (!(get_size(&player[i], fd)))
+	if (!(get_size(new, fd)))
 		return (0);
-	if (!(get_name_or_comment(&player[i], fd, GET_COMMENT)))
+	if (!(get_name_or_comment(new, fd, GET_COMMENT)))
 		return (0);
 	if (!(get_null(fd)))
 		return (0);
-	if (!(get_code(&player[i], fd)))
+	if (!(get_code(new, fd)))
 		return (0);
 	return (1);
 }
 
-int			read_player(t_player *player, char *str)
+int			read_player(t_main *m, char *str)
 {
 	int 	fd;
 
 	if ((fd = open(str, O_RDONLY)) < 0)
 		return (ft_error(CANT_OPEN_FILE));
-	if (!(parse_all(fd, player)))
+	if (!(parse_all(fd, m)))
 	{
 		close(fd);
 		return (0);
@@ -77,25 +88,52 @@ int			read_player(t_player *player, char *str)
 	return (1);
 }
 
-int			read_files(t_player *player, int ac, char **av)
+int			read_files(t_main *m, int ac, char **av)
 {
 	int 	i;
 
 	i = 0;
 	while (++i < ac)
 	{
-		if (!ft_strcmp(av[i], "-n") && i + 1 < ac)
+		if (!ft_strcmp(av[i], "-dump") && i + 1 < ac && is_number(av[i + 1]))
 		{
-			++i;
+			m->dump = ft_atoi(av[++i]);
+			continue ;
+		}
+		if (!ft_strcmp(av[i], "-n") && i + 2 < ac)
+		{
+			i += 2;
 			continue ;
 		}
 		if (check_file_format(av[i]))
 		{
-			if (!(read_player(player, av[i])))
+			if (!(read_player(m, av[i])))
 				return (0);
 		}
 		else
 			return (ft_error(BAD_FILE_FORMAT));
+	}
+	return (1);
+}
+
+int 		manage_n(t_main *m, int ac, char **av)
+{
+	int 	i;
+
+	i = 0;
+	while (++i < ac)
+	{
+		if (!ft_strcmp(av[i], "-n") && i + 2 < ac && is_number(av[i + 1]))
+		{
+			m->n_flag = ft_atoi(av[++i]);
+			if (check_file_format(av[++i]))
+			{
+				if (!(read_player(m, av[i])))
+					return (0);
+			}
+			else
+				return (ft_error(BAD_FILE_FORMAT));
+		}
 	}
 	return (1);
 }

@@ -10,7 +10,8 @@
 #                                                                              #
 # **************************************************************************** #
 
-SRC = error.c parse.c read_files.c vm_main.c start_game.c cursor.c print_dump.c check_cursors.c fight.c do_op.c live.c ld.c st.c add_sub.c zjmp.c forks.c
+SRC = error.c parse.c read_files.c vm_main.c start_game.c cursor.c print_dump.c check_cursors.c fight.c do_op.c live_forks_zjmp.c check_args.c \
+		players.c
 
 OBJ = $(SRC:.c=.o)
 

@@ -12,58 +12,53 @@
 
 #include "../corewar.h"
 
-void		count_players(t_main *main)
+int 		count_players(t_player *p)
 {
-	int		i;
+	int 	i;
 
-	i = -1;
-	while (++i < MAX_PLAYERS)
+	i = 0;
+	while (p)
 	{
-		if (main->player[i].size >= 0)
-			++main->num_of_players;
+		++i;
+		p = p->next;
 	}
+	return (i);
 }
 
 int			init_game(t_main **main)
 {
-	int 	i;
-
-	i = -1;
 	if (!(*main = (t_main *)ft_memalloc(sizeof(t_main))))
 		return (0);
 	if (!((*main)->field = (char *)ft_memalloc(MEM_SIZE)))
 		return (0);
-	if (!((*main)->player = (t_player *)ft_memalloc(sizeof(t_player) * MAX_PLAYERS)))
-		return (0);
-	while (++i < MAX_PLAYERS)
-		(*main)->player[i].size = -1;
 	(*main)->cycles_to_die = CYCLE_TO_DIE;
 	(*main)->last_player_live = 1;
 	(*main)->cycle = 0;
 	(*main)->live_num = 0;
 	(*main)->check_num = 0;
+	(*main)->dump = -1;
+	(*main)->n_flag = -1;
 	return (1);
 }
 
 int			main(int ac, char **av)
 {
-	t_main		*main;
+	t_main		*m;
 
-	main = 0;
+	m = 0;
 	if (ac < 2)
 		return (ft_error(NO_ARG));
-	if (!(init_game(&main)))
+	if (!(init_game(&m)))
 		return (ft_error(INVALID_MALLOC));
-	if (!(read_files(main->player, ac, av)))
+	if (!manage_n(m, ac, av) || !(read_files(m, ac, av)))
 	{
-		free_main(main);
-		return (0);
+		free_main(m);
+		return (-1);
 	}
-	count_players(main);
-	start_game(main);
-//	dump_memory_64(main->field);
-	printf("Contestant %d, \"%s\", has won !\n", main->last_player_live, main->player[main->last_player_live - 1].name);
-	dump_memory_64(main->field);
-	free_main(main);
+	m->num_of_players = count_players(m->player);
+	start_game(m);
+//	if (m->last_player_live)
+//		printf("Contestant %d, \"%s\", has won !\n", m->last_player_live, m->player[m->last_player_live - 1].name);
+	free_main(m);
 	return (0);
 }
