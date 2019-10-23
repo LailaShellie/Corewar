@@ -87,6 +87,14 @@ typedef struct		s_main
 	int				cycles_to_die;
 }					t_main;
 
+typedef struct		s_o
+{
+	int 			*t;
+	int 			step;
+	int 			*s;
+	int 			*x;
+}					t_o;
+
 int					set_player_fl(t_main *m, t_player *new);
 int					set_player(t_main *m, t_player *new);
 void				swap_players(t_player *a, t_player *b);
@@ -119,10 +127,9 @@ void				start_fight(t_main *main);
 void				do_op(t_main *m, t_cursor *c);
 int 				c_p(int pos);
 
-void				get_args(char *args, unsigned char byte);
-int					ft_size(char type, t_cursor *c);
-
-int 				read_mem(t_main *m, int pos, int size);
+int 				s(int t, int op);
+t_o 				*manage_type(t_main *m, t_cursor *c);
+void				get_args(t_main *m, t_cursor *c, t_o *o);
 
 void				do_live(t_main *m, t_cursor *c);
 void				do_zjmp(t_main *m, t_cursor *c);

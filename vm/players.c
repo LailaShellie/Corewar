@@ -43,7 +43,7 @@ int				set_player(t_main *m, t_player *new)
 	m->player = new;
 	new->next = tmp;
 	if (new->num < 0)
-		return (0);
+		return (ft_error(WRONG_NUM));
 	return (1);
 }
 
@@ -52,7 +52,7 @@ static int 		check_a(t_player *player, t_player *new)
 	while (player)
 	{
 		if (player->num == new->num)
-			return (0);
+			return (ft_error(BAD_FLAG));
 		player = player->next;
 	}
 	return (1);

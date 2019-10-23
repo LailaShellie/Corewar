@@ -126,6 +126,8 @@ int 		manage_n(t_main *m, int ac, char **av)
 		if (!ft_strcmp(av[i], "-n") && i + 2 < ac && is_number(av[i + 1]))
 		{
 			m->n_flag = ft_atoi(av[++i]);
+			if (!(m->n_flag > 0 && m->n_flag <= MAX_PLAYERS))
+				return (ft_error(BAD_FLAG));
 			if (check_file_format(av[++i]))
 			{
 				if (!(read_player(m, av[i])))

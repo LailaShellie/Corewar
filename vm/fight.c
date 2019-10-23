@@ -73,8 +73,8 @@ void		start_fight(t_main *m)
 			printf("%d - cycle\n", m->total_cycle);
 			dump_memory_64(m->field, m->cursor);
 		}
-//		printf("%d - cycle\n", m->total_cycle);
-//		dump_memory_64(m->field, m->cursor);
-//		sleep(1);
+		printf("%d - cycle\n", m->total_cycle);
+		dump_memory_64(m->field, m->cursor);
+		sleep(1);
 	}
 }

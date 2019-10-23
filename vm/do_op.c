@@ -25,17 +25,16 @@ int 		c_p(int pos)
 
 void		do_op(t_main *m, t_cursor *c)
 {
+	t_o		*o;
+
 	if (c->op == 1)
 		do_live(m, c);
 	else if (c->op == 9)
 		do_zjmp(m, c);
 	else if (c->op == 12 || c->op == 15)
 		do_fork(m, c);
-//	else
-//	{
-//		o = init_o(m, c);
-//		if (c->op == 2)
-//			do_ld(m, c, o);
-//	}
-//	free_o(o);
+	else
+	{
+		o = manage_type(m, c);
+	}
 }
