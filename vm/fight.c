@@ -59,7 +59,7 @@ void		do_cycle(t_main *main)
 	}
 }
 
-void		start_fight(t_main *m)
+int			start_fight(t_main *m)
 {
 	while (m->cursor)
 	{
@@ -70,11 +70,14 @@ void		start_fight(t_main *m)
 			check(m);
 		if (m->dump == m->total_cycle)
 		{
-			printf("%d - cycle\n", m->total_cycle);
+			//		printf("%d - cycle\n", m->total_cycle);
 			dump_memory_64(m->field, m->cursor);
+			return (0);
 		}
-		printf("%d - cycle\n", m->total_cycle);
-		dump_memory_64(m->field, m->cursor);
-		sleep(1);
+	//	printf("It is now cycle %d", m->total_cycle);
+//		printf("%d - cycle\n", m->total_cycle);
+//		dump_memory_64(m->field, m->cursor);
+//		sleep(1);
 	}
+	return (1);
 }

@@ -33,6 +33,23 @@
 # define NO_NULL "No null bytes"
 # define INV_CHAP_SIZE "Too big champion"
 
+# define LIVE 1
+# define LD 2
+# define ST 3
+# define ADD 4
+# define SUB 5
+# define AND 6
+# define OR 7
+# define XOR 8
+# define ZJMP 9
+# define LDI 10
+# define STI 11
+# define FORK 12
+# define LLD 13
+# define LLDI 14
+# define LFORK 15
+# define AFF 16
+
 # define MAX_OPS 16
 
 # define DIR 1
@@ -122,7 +139,7 @@ void				show_cursors(t_cursor *cursor);
 int 				dump_memory_64(char *field, t_cursor *c);
 
 int 				check(t_main *main);
-void				start_fight(t_main *main);
+int					start_fight(t_main *main);
 
 void				do_op(t_main *m, t_cursor *c);
 int 				c_p(int pos);
@@ -135,5 +152,16 @@ void				do_live(t_main *m, t_cursor *c);
 void				do_zjmp(t_main *m, t_cursor *c);
 void				do_fork(t_main *m, t_cursor *c);
 
+int 				read_mem(char *f, int pos, int size);
+void				modify_carry(t_cursor *c, int reg);
+void				get_reg(t_cursor *c, t_o *o);
+
+void				do_ld(t_cursor *c, t_o *o);
+void				do_add_sub(t_cursor *c, t_o *o);
+void				do_sti(t_main *m, t_cursor *c, t_o *o);
+void				do_st(t_main *m, t_cursor *c, t_o *o);
+void				do_ldi(t_main *m, t_cursor *c, t_o *o);
+void				do_aff(t_cursor *c, t_o *o);
+void				do_and_or_xor(t_cursor *c, t_o *o);
 
 #endif

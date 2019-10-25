@@ -15,14 +15,14 @@
 int			check_file_format(char *str)
 {
 	int 	len;
-
-	len = ft_strlen(str);
-	if (len < 4)
-		return (0);
-	if (len == 4 && ft_strcmp(str, ".cor"))
-		return (0);
-	if (len > 4 && ft_strcmp(&str[len - 4], ".cor"))
-		return (0);
+//
+//	len = ft_strlen(str);
+//	if (len < 4)
+//		return (0);
+//	if (len == 4 && ft_strcmp(str, ".cor"))
+//		return (0);
+//	if (len > 4 && ft_strcmp(&str[len - 4], ".cor"))
+//		return (0);
 	return (1);
 }
 

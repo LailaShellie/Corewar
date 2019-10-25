@@ -54,18 +54,18 @@ void		print_hex_char(unsigned char octet, int i, t_cursor *c)
 		printf("\n");
 		print_hex_int(i);
 	}
-	if (!(find_cursor(c, i)))
-	{
+//	if (!(find_cursor(c, i)))
+//	{
 		if (s[octet / 16] == '0')
 			printf("0");
 		printf("%x ", octet);
-	}
-	else
-	{
-		if (s[octet / 16] == '0')
-			printf("\033[031;43m0\033[0m");
-		printf("\033[031;43m%x\033[0m ", octet);
-	}
+//	}
+//	else
+//	{
+//		if (s[octet / 16] == '0')
+//			printf("\033[031;43m0\033[0m");
+//		printf("\033[031;43m%x\033[0m ", octet);
+//	}
 	//write(1, &c[octet % 16], 1);
 }
 

@@ -95,8 +95,12 @@ int 		check_args(t_o *o)
 	i = -1;
 	while (++i < 3)
 	{
-		if (o->t[i] == REG && (o->x[i] > 0 && o->x[i] <= 16))
-			return (0);
+		if (o->t[i] == REG)
+		{
+			--o->x[i];
+			if (!(o->x[i] >= 0 && o->x[i] < 16))
+				return (0);
+		}
 	}
 	return (1);
 }

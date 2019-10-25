@@ -27,14 +27,29 @@ void		do_op(t_main *m, t_cursor *c)
 {
 	t_o		*o;
 
-	if (c->op == 1)
+	if (c->op == LIVE)
 		do_live(m, c);
-	else if (c->op == 9)
+	else if (c->op == ZJMP)
 		do_zjmp(m, c);
-	else if (c->op == 12 || c->op == 15)
+	else if (c->op == FORK || c->op == LFORK)
 		do_fork(m, c);
 	else
 	{
-		o = manage_type(m, c);
+		if (!(o = manage_type(m, c)))
+			return ;
+		if (c->op == LD || c->op == LLD)
+			do_ld(c, o);
+		else if (c->op == ADD || c->op == SUB)
+			do_add_sub(c, o);
+		else if (c->op == AND || c->op == OR || c->op == XOR)
+			do_and_or_xor(c, o);
+		else if (c->op == ST)
+			do_st(m, c, o);
+		else if (c->op == STI)
+			do_sti(m, c, o);
+		else if (c->op == AFF)
+			do_aff(c, o);
+		else if (c->op == LDI || c->op == LLDI)
+			do_ldi(m, c, o);
 	}
 }

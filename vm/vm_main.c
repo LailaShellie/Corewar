@@ -12,11 +12,29 @@
 
 #include "../corewar.h"
 
-int 		count_players(t_player *p)
+void		choose_winner(t_main *m)
+{
+	t_player	*winner;
+	int 		i;
+
+	winner = m->player;
+	i = m->last_player_live;
+	while (winner)
+	{
+		if (winner->num + 1 == i)
+			break ;
+		winner = winner->next;
+	}
+	if (winner)
+		printf("Contestant %d, \"%s\", has won !\n", m->last_player_live, winner->name);
+}
+
+int 		count_players(t_main *m, t_player *p)
 {
 	int 	i;
 
 	i = 0;
+	m->last_player_live = p->num + 1;
 	while (p)
 	{
 		++i;
@@ -47,7 +65,10 @@ int			main(int ac, char **av)
 
 	m = 0;
 	if (ac < 2)
-		return (ft_error(NO_ARG));
+	{
+		ft_error(NO_ARG);
+		return (-1);
+	}
 	if (!(init_game(&m)))
 		return (ft_error(INVALID_MALLOC));
 	if (!manage_n(m, ac, av) || !(read_files(m, ac, av)))
@@ -55,10 +76,13 @@ int			main(int ac, char **av)
 		free_main(m);
 		return (-1);
 	}
-	m->num_of_players = count_players(m->player);
-	start_game(m);
-//	if (m->last_player_live)
-//		printf("Contestant %d, \"%s\", has won !\n", m->last_player_live, m->player[m->last_player_live - 1].name);
+	m->num_of_players = count_players(m, m->player);
+	if (!(start_game(m)))
+	{
+		free_main(m);
+		return (0);
+	}
+	choose_winner(m);
 	free_main(m);
 	return (0);
 }

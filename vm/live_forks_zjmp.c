@@ -22,6 +22,7 @@ static int		get_dir(t_main *m, t_cursor *c, int pos, int size)
 	int		t_dir;
 
 	i = -1;
+	t_dir = 0;
 	while (++i < size)
 		dir[size - i - 1] = m->field[c_p(c->pos + pos + i)];
 	if (size == 4)
@@ -57,6 +58,8 @@ void		do_zjmp(t_main *m, t_cursor *c)
 		t_dir = get_dir(m, c, 1, 2);
 		c->pos = c_p(c->pos + t_dir % IDX_MOD);
 	}
+	else
+		c->pos = c_p(c->pos + 3);
 }
 
 void		do_fork(t_main *m, t_cursor *c)
@@ -66,9 +69,9 @@ void		do_fork(t_main *m, t_cursor *c)
 	int 		i;
 
 	i = -1;
-	if (c->op == 12)
+	if (c->op == FORK)
 		dir = get_dir(m, c, 1, 2) % IDX_MOD;
-	else if (c->op == 15)
+	else if (c->op == LFORK)
 		dir = get_dir(m, c, 1, 2);
 	new = new_cursor();
 	new->pos = c_p(c->pos + dir);

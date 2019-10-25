@@ -89,6 +89,7 @@ int 		start_game(t_main *main)
 	sort_players(main);
 	introduce(main->player);
 	set_players(main);
-	start_fight(main);
+	if (!(start_fight(main)))
+		return (0);
 	return (1);
 }
