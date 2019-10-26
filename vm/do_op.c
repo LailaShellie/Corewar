@@ -27,6 +27,7 @@ void		do_op(t_main *m, t_cursor *c)
 {
 	t_o		*o;
 
+	o = 0;
 	if (c->op == LIVE)
 		do_live(m, c);
 	else if (c->op == ZJMP)
@@ -38,18 +39,19 @@ void		do_op(t_main *m, t_cursor *c)
 		if (!(o = manage_type(m, c)))
 			return ;
 		if (c->op == LD || c->op == LLD)
-			do_ld(c, o);
+			do_ld(m, c, o);
 		else if (c->op == ADD || c->op == SUB)
-			do_add_sub(c, o);
+			do_add_sub(m, c, o);
 		else if (c->op == AND || c->op == OR || c->op == XOR)
-			do_and_or_xor(c, o);
+			do_and_or_xor(m, c, o);
 		else if (c->op == ST)
 			do_st(m, c, o);
 		else if (c->op == STI)
 			do_sti(m, c, o);
 		else if (c->op == AFF)
-			do_aff(c, o);
+			do_aff(m, c, o);
 		else if (c->op == LDI || c->op == LLDI)
 			do_ldi(m, c, o);
+		free_o(o);
 	}
 }

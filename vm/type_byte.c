@@ -71,11 +71,11 @@ void		find_step(t_cursor *c, t_o *o)
 
 	i = -1;
 	step = 0;
-	while (++i < g_num[c->op])
-	{
+	while (++i < 3)
 		o->s[i] = s(o->t[i], c->op);
+	i = -1;
+	while (++i < g_num[c->op])
 		step += s(o->t[i], c->op);
-	}
 	o->step = step + 2;
 }
 
@@ -105,6 +105,17 @@ int 		check_args(t_o *o)
 	return (1);
 }
 
+int 		check_num(t_cursor *c, t_o *o)
+{
+	if (g_num[c->op] == 1 && !o->t[0])
+		return (0);
+	if (g_num[c->op] == 2 && (!o->t[0] || !o->t[1]))
+		return (0);
+	if (g_num[c->op] == 3 && (!o->t[0] || !o->t[1] || !o->t[2]))
+		return (0);
+	return (1);
+}
+
 t_o 		*manage_type(t_main *m, t_cursor *c)
 {
 	t_o				*o;
@@ -122,7 +133,7 @@ t_o 		*manage_type(t_main *m, t_cursor *c)
 	set_types(o->t, types);
 	find_step(c, o);
 	get_args(m, c, o);
-	if (!(check_args(o)))
+	if (!(check_args(o)) || !check_num(c, o))
 	{
 		c->pos = c_p(c->pos + o->step);
 		return (free_o(o));

@@ -48,13 +48,23 @@ void		do_ldi(t_main *m, t_cursor *c, t_o *o)
 	get_reg(c, o);
 	if (check_ldi(o))
 	{
-		if (c->op == 10)
+		if (c->op == LDI)
+		{
 			a = c->pos + (o->x[0] + o->x[1]) % IDX_MOD;
-		else if (c->op == 14)
+			if (m->v_flag)
+				printf("P\t%d | ldi %d r%d\n", c->id + 1, a, o->x[2] + 1);
+			c->reg[store] = read_mem(m->field, a, 4);
+		}
+		else if (c->op == LLDI)
+		{
 			a = c->pos + o->x[0] + o->x[1];
-		c->reg[store] = read_mem(m->field, a, 4);
-		modify_carry(c, c->reg[store]);
+			if (m->v_flag)
+				printf("P\t%d | lldi %d r%d\n", c->id + 1, a, o->x[2] + 1);
+			c->reg[store] = read_mem(m->field, a, 4);
+			modify_carry(c, c->reg[store]);
+		}
 	}
+	c->op = 0;
 	c->pos = c_p(c->pos + o->step);
 }
 
@@ -63,12 +73,19 @@ void		do_st(t_main *m, t_cursor *c, t_o *o)
 	int 	a;
 
 	if (o->t[0] == REG && o->t[1] == REG)
+	{
+		if (m->v_flag)
+			printf("P\t%d | st r%d %d\n", c->id + 1, o->x[0] + 1, o->x[1] + 1);
 		c->reg[o->x[1]] = c->reg[o->x[0]];
+	}
 	else if (o->t[0] == REG && o->t[1] == IND)
 	{
 		a = c->pos + o->x[1] % IDX_MOD;
+		if (m->v_flag)
+			printf("P\t%d | st r%d %d\n", c->id + 1, o->x[0] + 1, o->x[1]);
 		set_mem(m->field, c->reg[o->x[0]], a);
 	}
+	c->op = 0;
 	c->pos = c_p(c->pos + o->step);
 }
 
@@ -82,7 +99,10 @@ void		do_sti(t_main *m, t_cursor *c, t_o *o)
 	if (check_sti(o))
 	{
 		a = c->pos + (o->x[1] + o->x[2]) % IDX_MOD;
+		if (m->v_flag)
+			printf("P\t%d | sti r%d %d %d\n| -> store to %d + %d = %d  \n", c->id + 1, store + 1, o->x[1], o->x[2], o->x[1], o->x[2], o->x[1]+ o->x[2]);
 		set_mem(m->field, c->reg[store], a);
 	}
+	c->op = 0;
 	c->pos = c_p(c->pos + o->step);
 }

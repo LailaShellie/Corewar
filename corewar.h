@@ -102,6 +102,7 @@ typedef struct		s_main
 	int				cycle;
 	int 			total_cycle;
 	int				cycles_to_die;
+	int 			v_flag;
 }					t_main;
 
 typedef struct		s_o
@@ -137,6 +138,9 @@ t_cursor			*new_cursor();
 void				show_cursors(t_cursor *cursor);
 
 int 				dump_memory_64(char *field, t_cursor *c);
+void		print_hex_char(unsigned char octet, int i, t_cursor *c);
+int 		dump_memory(char *field);
+void		*free_o(t_o *o);
 
 int 				check(t_main *main);
 int					start_fight(t_main *main);
@@ -156,12 +160,12 @@ int 				read_mem(char *f, int pos, int size);
 void				modify_carry(t_cursor *c, int reg);
 void				get_reg(t_cursor *c, t_o *o);
 
-void				do_ld(t_cursor *c, t_o *o);
-void				do_add_sub(t_cursor *c, t_o *o);
+void				do_ld(t_main *m, t_cursor *c, t_o *o);
+void				do_add_sub(t_main *m, t_cursor *c, t_o *o);
 void				do_sti(t_main *m, t_cursor *c, t_o *o);
 void				do_st(t_main *m, t_cursor *c, t_o *o);
 void				do_ldi(t_main *m, t_cursor *c, t_o *o);
-void				do_aff(t_cursor *c, t_o *o);
-void				do_and_or_xor(t_cursor *c, t_o *o);
+void				do_aff(t_main *m, t_cursor *c, t_o *o);
+void				do_and_or_xor(t_main *m, t_cursor *c, t_o *o);
 
 #endif

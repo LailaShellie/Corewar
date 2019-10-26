@@ -82,6 +82,7 @@ int			main(int ac, char **av)
 		free_main(m);
 		return (0);
 	}
+//	printf("%d\n", m->total_cycle);
 	choose_winner(m);
 	free_main(m);
 	return (0);

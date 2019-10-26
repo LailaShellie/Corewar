@@ -105,6 +105,11 @@ int			read_files(t_main *m, int ac, char **av)
 			i += 2;
 			continue ;
 		}
+		if (!ft_strcmp(av[i], "-v") && i + 1 < ac)
+		{
+			i += 1;
+			continue ;
+		}
 		if (check_file_format(av[i]))
 		{
 			if (!(read_player(m, av[i])))
@@ -123,6 +128,8 @@ int 		manage_n(t_main *m, int ac, char **av)
 	i = 0;
 	while (++i < ac)
 	{
+		if (!ft_strcmp(av[i], "-v") && i + 1 < ac && is_number(av[i + 1]))
+			m->v_flag = ft_atoi(av[++i]);
 		if (!ft_strcmp(av[i], "-n") && i + 2 < ac && is_number(av[i + 1]))
 		{
 			m->n_flag = ft_atoi(av[++i]);

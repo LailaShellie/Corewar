@@ -58,15 +58,13 @@ int 	check(t_main *main)
 	{
 		main->cycles_to_die -= CYCLE_DELTA;
 		main->check_num = 0;
-		main->cycle = 0;
-//		main->live_num = 0;
 	}
 	else if (main->check_num >= MAX_CHECKS)
 	{
 		main->cycles_to_die -= CYCLE_DELTA;
 		main->check_num = 0;
-		main->cycle = 0;
-		main->live_num = 0;
 	}
+	main->live_num = 0;
+	main->cycle = 0;
 	return (1);
 }
