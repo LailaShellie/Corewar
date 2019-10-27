@@ -154,5 +154,6 @@ void				do_st(t_main *m, t_cursor *c, t_o *o);
 void				do_ldi(t_main *m, t_cursor *c, t_o *o);
 void				do_aff(t_main *m, t_cursor *c, t_o *o);
 void				do_and_or_xor(t_main *m, t_cursor *c, t_o *o);
+int					choose_type(char tmp);
 
 #endif

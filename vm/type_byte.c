@@ -12,31 +12,24 @@
 
 #include "../corewar.h"
 
-int			g_dir[17] = {T_DIR_SIZE,
-	4, 4, 4, 4, 4, 4, 4, 4, 2, 2, 2, 2, 4, 2, 2, 4};
 int			g_num[17] = {NUM_ARG, 1, 2, 2,
 	3, 3, 3, 3, 3, 1, 3, 3, 1, 2, 3, 1, 1};
 
-int			s(int t, int op)
+int			check_args(t_cursor *c, t_o *o)
 {
-	if (t == REG)
-		return (1);
-	else if (t == IND)
-		return (2);
-	else if (t == DIR)
-		return (g_dir[op]);
-	return (0);
-}
+	int		i;
 
-int			choose_type(char tmp)
-{
-	if (tmp == REG)
-		return (REG);
-	else if (tmp == IND)
-		return (IND);
-	else if (tmp == DIR)
-		return (DIR);
-	return (0);
+	i = -1;
+	while (++i < g_num[c->op])
+	{
+		if (o->t[i] == REG)
+		{
+			--o->x[i];
+			if (!(o->x[i] >= 0 && o->x[i] < 16))
+				return (0);
+		}
+	}
+	return (1);
 }
 
 void		set_types(int *t, unsigned char types)
@@ -81,11 +74,38 @@ void		find_step(t_cursor *c, t_o *o)
 	o->step = step + 2;
 }
 
-void		*free_o(t_o *o)
+int			check_num(t_cursor *c, t_o *o)
 {
-	free(o->x);
-	free(o->s);
-	free(o->t);
-	free(o);
-	return (0);
+	if (g_num[c->op] == 1 && !o->t[0])
+		return (0);
+	if (g_num[c->op] == 2 && (!o->t[0] || !o->t[1]))
+		return (0);
+	if (g_num[c->op] == 3 && (!o->t[0] || !o->t[1] || !o->t[2]))
+		return (0);
+	return (1);
+}
+
+t_o			*manage_type(t_main *m, t_cursor *c)
+{
+	t_o				*o;
+	unsigned char	types;
+
+	types = m->field[c_p(c->pos + 1)];
+	if (!(o = ft_memalloc(sizeof(t_o))))
+		return (0);
+	if (!(o->t = ft_memalloc(sizeof(int) * 3)))
+		return (free_o(o));
+	if (!(o->s = ft_memalloc(sizeof(int) * 3)))
+		return (free_o(o));
+	if (!(o->x = ft_memalloc(sizeof(int) * 3)))
+		return (free_o(o));
+	set_types(o->t, types);
+	find_step(c, o);
+	get_args(m, c, o);
+	if (!(check_args(c, o)) || !check_num(c, o))
+	{
+		c->pos = c_p(c->pos + o->step);
+		return (free_o(o));
+	}
+	return (o);
 }

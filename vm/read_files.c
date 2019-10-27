@@ -71,7 +71,7 @@ int			read_files(t_main *m, int ac, char **av)
 	i = 0;
 	while (++i < ac)
 	{
-		if (!ft_strcmp(av[i], "-dump") && i + 1 < ac && is_number(av[i + 1]))
+		if (!ft_strcmp(av[i], "-dump") && i + 2 < ac && is_number(av[i + 1]))
 		{
 			m->dump = ft_atoi(av[++i]);
 			continue ;

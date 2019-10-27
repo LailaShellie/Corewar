@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 SRC1 = error.c parse.c read_files.c vm_main.c start_game.c cursor.c print_dump.c check_cursors.c fight.c do_op.c live_forks_zjmp.c \
-		players.c type_byte.c get_args.c
+		players.c type_byte.c get_args.c manage_type.c
 
 SRC2 = ops1.c ops2.c
 
