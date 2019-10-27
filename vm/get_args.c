@@ -22,7 +22,7 @@ void		modify_carry(t_cursor *c, int reg)
 
 void		get_reg(t_cursor *c, t_o *o)
 {
-	int 	i;
+	int		i;
 
 	i = -1;
 	while (++i < 3)
@@ -32,10 +32,10 @@ void		get_reg(t_cursor *c, t_o *o)
 	}
 }
 
-int 		read_mem(char *f, int pos, int size)
+int			read_mem(char *f, int pos, int size)
 {
-	int 	i;
-	char 	ret[4];
+	int		i;
+	char	ret[4];
 
 	i = -1;
 	while (++i < 4)
@@ -54,7 +54,7 @@ int 		read_mem(char *f, int pos, int size)
 
 void		get_ind(t_main *m, t_cursor *c, t_o *o)
 {
-	int 	i;
+	int		i;
 
 	i = -1;
 	while (++i < 3)

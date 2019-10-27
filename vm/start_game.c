@@ -15,7 +15,7 @@
 void		sort_players(t_main *m)
 {
 	t_player	*cur;
-	int 		i;
+	int			i;
 
 	i = -1;
 	while (++i < 4 && m->player)
@@ -30,9 +30,9 @@ void		sort_players(t_main *m)
 	}
 }
 
-int 		paste_code(t_main *main, t_player *player, int pos)
+int			paste_code(t_main *main, t_player *player, int pos)
 {
-	int 	i;
+	int		i;
 
 	i = -1;
 	while (++i < player->size)
@@ -40,7 +40,7 @@ int 		paste_code(t_main *main, t_player *player, int pos)
 	return (1);
 }
 
-int 		set_players(t_main *main)
+int			set_players(t_main *main)
 {
 	int			pos0;
 	int			pos;
@@ -62,7 +62,7 @@ int 		set_players(t_main *main)
 	return (1);
 }
 
-int 		introduce(t_player *player)
+int			introduce(t_player *player)
 {
 	t_player *cur;
 
@@ -84,7 +84,7 @@ int 		introduce(t_player *player)
 	return (1);
 }
 
-int 		start_game(t_main *main)
+int			start_game(t_main *main)
 {
 	sort_players(main);
 	introduce(main->player);

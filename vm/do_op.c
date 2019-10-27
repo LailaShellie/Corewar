@@ -12,7 +12,18 @@
 
 #include "../corewar.h"
 
-int 		c_p(int pos)
+void		set_mem(char *f, int reg, int pos)
+{
+	int		i;
+	char	*store;
+
+	store = (char *)(&reg);
+	i = -1;
+	while (++i < 4)
+		f[c_p(pos + i)] = store[3 - i];
+}
+
+int			c_p(int pos)
 {
 	pos %= MEM_SIZE;
 	if (pos >= MEM_SIZE)
@@ -21,6 +32,24 @@ int 		c_p(int pos)
 		return (MEM_SIZE - ft_abs(pos));
 	else
 		return (pos);
+}
+
+void		do_op1(t_main *m, t_cursor *c, t_o *o)
+{
+	if (c->op == LD || c->op == LLD)
+		do_ld(m, c, o);
+	else if (c->op == ADD || c->op == SUB)
+		do_add_sub(m, c, o);
+	else if (c->op == AND || c->op == OR || c->op == XOR)
+		do_and_or_xor(m, c, o);
+	else if (c->op == ST)
+		do_st(m, c, o);
+	else if (c->op == STI)
+		do_sti(m, c, o);
+	else if (c->op == AFF)
+		do_aff(m, c, o);
+	else if (c->op == LDI || c->op == LLDI)
+		do_ldi(m, c, o);
 }
 
 void		do_op(t_main *m, t_cursor *c)
@@ -38,20 +67,7 @@ void		do_op(t_main *m, t_cursor *c)
 	{
 		if (!(o = manage_type(m, c)))
 			return ;
-		if (c->op == LD || c->op == LLD)
-			do_ld(m, c, o);
-		else if (c->op == ADD || c->op == SUB)
-			do_add_sub(m, c, o);
-		else if (c->op == AND || c->op == OR || c->op == XOR)
-			do_and_or_xor(m, c, o);
-		else if (c->op == ST)
-			do_st(m, c, o);
-		else if (c->op == STI)
-			do_sti(m, c, o);
-		else if (c->op == AFF)
-			do_aff(m, c, o);
-		else if (c->op == LDI || c->op == LLDI)
-			do_ldi(m, c, o);
+		do_op1(m, c, o);
 		free_o(o);
 	}
 }

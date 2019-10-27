@@ -12,7 +12,7 @@
 
 #include "../corewar.h"
 
-int 	is_number(char *str)
+int		is_number(char *str)
 {
 	int		i;
 

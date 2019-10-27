@@ -12,10 +12,34 @@
 
 #include "../corewar.h"
 
+t_player	*choose_player(t_main *m)
+{
+	t_player	*new;
+
+	if (m->n_flag == -1)
+	{
+		new = ft_memalloc(sizeof(t_player));
+		new->num = -1;
+		if (!(set_player(m, new)))
+			return (0);
+	}
+	else if (m->n_flag > 0 && m->n_flag <= MAX_PLAYERS)
+	{
+		new = ft_memalloc(sizeof(t_player));
+		new->num = m->n_flag - 1;
+		m->n_flag = -1;
+		if (!(set_player_fl(m, new)))
+			return (0);
+	}
+	else
+		return (0);
+	return (new);
+}
+
 void		choose_winner(t_main *m)
 {
 	t_player	*winner;
-	int 		i;
+	int			i;
 
 	winner = m->player;
 	i = m->last_player_live;
@@ -26,12 +50,18 @@ void		choose_winner(t_main *m)
 		winner = winner->next;
 	}
 	if (winner)
-		printf("Contestant %d, \"%s\", has won !\n", m->last_player_live, winner->name);
+	{
+		ft_putstr("Contestant ");
+		ft_putnbr(m->last_player_live);
+		ft_putstr(", \"");
+		ft_putstr(winner->name);
+		ft_putstr("\", has won !\n");
+	}
 }
 
-int 		count_players(t_main *m, t_player *p)
+int			count_players(t_main *m, t_player *p)
 {
-	int 	i;
+	int		i;
 
 	i = 0;
 	m->last_player_live = p->num + 1;
@@ -82,7 +112,6 @@ int			main(int ac, char **av)
 		free_main(m);
 		return (0);
 	}
-//	printf("%d\n", m->total_cycle);
 	choose_winner(m);
 	free_main(m);
 	return (0);

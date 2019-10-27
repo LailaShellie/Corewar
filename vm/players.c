@@ -24,8 +24,8 @@ static void		set_a(t_player *player, int *a)
 int				set_player(t_main *m, t_player *new)
 {
 	t_player	*tmp;
-	int 		*a;
-	int 		i;
+	int			*a;
+	int			i;
 
 	i = -1;
 	a = ft_memalloc(sizeof(int) * 4);
@@ -47,7 +47,7 @@ int				set_player(t_main *m, t_player *new)
 	return (1);
 }
 
-static int 		check_a(t_player *player, t_player *new)
+static int		check_a(t_player *player, t_player *new)
 {
 	while (player)
 	{

@@ -12,28 +12,18 @@
 
 #include "../corewar.h"
 
-int 	check_cursors(t_main *main)
+void	check_cursors_while(t_main *m, t_cursor *c, t_cursor *prev)
 {
-	t_cursor	*c;
-	t_cursor	*prev;
-
-	prev = 0;
-	c = main->cursor;
-	if (main->cycles_to_die <= 0)
-	{
-		free_cursor(main);
-		return (1);
-	}
 	while (c)
 	{
-		if (main->total_cycle - c->last_live_cycle >= main->cycles_to_die)
+		if (m->total_cycle - c->last_live_cycle >= m->cycles_to_die)
 		{
 			if (!prev)
 			{
-				main->cursor = c->next;
+				m->cursor = c->next;
 				free(c->reg);
 				free(c);
-				c = main->cursor;
+				c = m->cursor;
 				continue ;
 			}
 			else
@@ -47,10 +37,25 @@ int 	check_cursors(t_main *main)
 		prev = c;
 		c = c->next;
 	}
+}
+
+int		check_cursors(t_main *m)
+{
+	t_cursor	*c;
+	t_cursor	*prev;
+
+	prev = 0;
+	c = m->cursor;
+	if (m->cycles_to_die <= 0)
+	{
+		free_cursor(m);
+		return (1);
+	}
+	check_cursors_while(m, c, prev);
 	return (1);
 }
 
-int 	check(t_main *main)
+int		check(t_main *main)
 {
 	++main->check_num;
 	check_cursors(main);

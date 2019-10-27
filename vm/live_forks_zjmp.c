@@ -12,8 +12,8 @@
 
 #include "../corewar.h"
 
-int 	g_live[6] = {1, 0, T_DIR, 0, 0, 4};
-int 	g_fork[6] = {1, 0, T_DIR, 0, 0, 2};
+int				g_live[6] = {1, 0, T_DIR, 0, 0, 4};
+int				g_fork[6] = {1, 0, T_DIR, 0, 0, 2};
 
 static int		get_dir(t_main *m, t_cursor *c, int pos, int size)
 {
@@ -35,7 +35,7 @@ static int		get_dir(t_main *m, t_cursor *c, int pos, int size)
 	return (t_dir);
 }
 
-void		do_live(t_main *m, t_cursor *c)
+void			do_live(t_main *m, t_cursor *c)
 {
 	char	dir[4];
 	int		i;
@@ -45,18 +45,19 @@ void		do_live(t_main *m, t_cursor *c)
 	while (++i < g_live[T_DIR_SIZE])
 		dir[3 - i] = m->field[c_p(c->pos + 1 + i)];
 	t_dir = *((int *)dir);
-	if (m->v_flag)
-		printf("P\t%d | live %d\n", c->id + 1, t_dir);
-	t_dir = ft_abs(t_dir);
 	++m->live_num;
 	c->last_live_cycle = m->total_cycle;
-	if (t_dir > 0 && t_dir <= m->num_of_players)
-		m->last_player_live = t_dir;
+	if (t_dir < 0)
+	{
+		t_dir = ft_abs(t_dir);
+		if (t_dir > 0 && t_dir <= m->num_of_players)
+			m->last_player_live = t_dir;
+	}
 	c->op = 0;
 	c->pos = c_p(c->pos + g_live[T_DIR_SIZE] + 1);
 }
 
-void		do_zjmp(t_main *m, t_cursor *c)
+void			do_zjmp(t_main *m, t_cursor *c)
 {
 	int		t_dir;
 
@@ -65,37 +66,26 @@ void		do_zjmp(t_main *m, t_cursor *c)
 	{
 		if (t_dir)
 			c->pos = c_p(c->pos + t_dir % IDX_MOD);
-		if (m->v_flag)
-			printf("P\t%d | zjmp %d OK\n", c->id + 1, t_dir);
 	}
 	else
 	{
 		c->pos = c_p(c->pos + 3);
-		if (m->v_flag)
-			printf("P\t%d | zjmp FaIl\n", c->id + 1);
 	}
 	c->op = 0;
 }
 
-void		do_fork(t_main *m, t_cursor *c)
+void			do_fork(t_main *m, t_cursor *c)
 {
-	int 		dir;
+	int			dir;
 	t_cursor	*new;
-	int 		i;
+	int			i;
 
 	i = -1;
+	dir = 0;
 	if (c->op == FORK)
-	{
 		dir = get_dir(m, c, 1, 2) % IDX_MOD;
-		if (m->v_flag)
-			printf("P\t%d | fork %d\n", c->id + 1, dir);
-	}
 	else if (c->op == LFORK)
-	{
 		dir = get_dir(m, c, 1, 2);
-		if (m->v_flag)
-			printf("P\t%d | lfork %d\n", c->id + 1, dir);
-	}
 	new = new_cursor();
 	new->pos = c_p(c->pos + dir);
 	new->last_live_cycle = c->last_live_cycle;

@@ -12,21 +12,6 @@
 
 #include "../corewar.h"
 
-void		show_cursors(t_cursor *cursor)
-{
-	int i;
-
-	while (cursor)
-	{
-		printf("%d   %d\n", cursor->id, cursor->pos);
-		i = -1;
-		while (++i < REG_NUMBER)
-			printf("%d ", cursor->reg[i]);
-		printf("\n");
-		cursor = cursor->next;
-	}
-}
-
 void		set_cursor(t_cursor **first, t_cursor *cursor)
 {
 	t_cursor *tmp;
@@ -41,7 +26,7 @@ void		set_cursor(t_cursor **first, t_cursor *cursor)
 	}
 }
 
-t_cursor	*new_cursor()
+t_cursor	*new_cursor(void)
 {
 	t_cursor *new;
 

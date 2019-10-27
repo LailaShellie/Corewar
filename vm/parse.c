@@ -14,7 +14,7 @@
 
 int		get_size(t_player *player, int fd)
 {
-	int 	i;
+	int		i;
 	char	buf[4];
 	char	size[4];
 
@@ -31,7 +31,7 @@ int		get_size(t_player *player, int fd)
 
 int		get_header(int fd)
 {
-	int 	i;
+	int		i;
 	char	buf[4];
 	char	str[4];
 
@@ -47,7 +47,7 @@ int		get_header(int fd)
 
 int		get_null(int fd)
 {
-	char 	buf[4];
+	char	buf[4];
 
 	if (read(fd, buf, 4) < 0)
 		return (ft_error(READ_ERROR));
@@ -59,7 +59,7 @@ int		get_null(int fd)
 int		get_code(t_player *player, int fd)
 {
 	char	buf[player->size + 1];
-	int 	ret;
+	int		ret;
 
 	if ((ret = read(fd, buf, player->size)) < 0)
 		return (ft_error(READ_ERROR));
@@ -75,8 +75,8 @@ int		get_code(t_player *player, int fd)
 
 int		get_name_or_comment(t_player *player, int fd, int fl)
 {
-	int 	ret;
-	char 	buf1[129];
+	int		ret;
+	char	buf1[129];
 	char	buf2[2049];
 
 	if (fl == GET_NAME)

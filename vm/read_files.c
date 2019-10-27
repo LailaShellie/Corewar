@@ -14,45 +14,21 @@
 
 int			check_file_format(char *str)
 {
-	int 	len;
-//
-//	len = ft_strlen(str);
-//	if (len < 4)
-//		return (0);
-//	if (len == 4 && ft_strcmp(str, ".cor"))
-//		return (0);
-//	if (len > 4 && ft_strcmp(&str[len - 4], ".cor"))
-//		return (0);
-	return (1);
-}
+	int		len;
 
-t_player		*choose_player(t_main *m)
-{
-	t_player	*new;
-
-	if (m->n_flag == -1)
-	{
-		new = ft_memalloc(sizeof(t_player));
-		new->num = -1;
-		if (!(set_player(m, new)))
-			return (0);
-	}
-	else if (m->n_flag > 0 && m->n_flag <= MAX_PLAYERS)
-	{
-		new = ft_memalloc(sizeof(t_player));
-		new->num = m->n_flag - 1;
-		m->n_flag = -1;
-		if (!(set_player_fl(m, new)))
-			return (0);
-	}
-	else
+	len = ft_strlen(str);
+	if (len < 4)
 		return (0);
-	return (new);
+	if (len == 4 && ft_strcmp(str, ".cor"))
+		return (0);
+	if (len > 4 && ft_strcmp(&str[len - 4], ".cor"))
+		return (0);
+	return (1);
 }
 
 int			parse_all(int fd, t_main *m)
 {
-	t_player *new;
+	t_player	*new;
 
 	if (!(new = choose_player(m)))
 		return (0);
@@ -75,7 +51,7 @@ int			parse_all(int fd, t_main *m)
 
 int			read_player(t_main *m, char *str)
 {
-	int 	fd;
+	int		fd;
 
 	if ((fd = open(str, O_RDONLY)) < 0)
 		return (ft_error(CANT_OPEN_FILE));
@@ -90,7 +66,7 @@ int			read_player(t_main *m, char *str)
 
 int			read_files(t_main *m, int ac, char **av)
 {
-	int 	i;
+	int		i;
 
 	i = 0;
 	while (++i < ac)
@@ -105,11 +81,6 @@ int			read_files(t_main *m, int ac, char **av)
 			i += 2;
 			continue ;
 		}
-		if (!ft_strcmp(av[i], "-v") && i + 1 < ac)
-		{
-			i += 1;
-			continue ;
-		}
 		if (check_file_format(av[i]))
 		{
 			if (!(read_player(m, av[i])))
@@ -121,15 +92,13 @@ int			read_files(t_main *m, int ac, char **av)
 	return (1);
 }
 
-int 		manage_n(t_main *m, int ac, char **av)
+int			manage_n(t_main *m, int ac, char **av)
 {
-	int 	i;
+	int		i;
 
 	i = 0;
 	while (++i < ac)
 	{
-		if (!ft_strcmp(av[i], "-v") && i + 1 < ac && is_number(av[i + 1]))
-			m->v_flag = ft_atoi(av[++i]);
 		if (!ft_strcmp(av[i], "-n") && i + 2 < ac && is_number(av[i + 1]))
 		{
 			m->n_flag = ft_atoi(av[++i]);

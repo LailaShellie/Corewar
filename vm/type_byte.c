@@ -12,10 +12,12 @@
 
 #include "../corewar.h"
 
-int 		g_dir[17] = {T_DIR_SIZE, 4, 4, 4, 4, 4, 4, 4, 4, 2, 2, 2, 2, 4, 2, 2, 4};
-int 		g_num[17] = {NUM_ARG, 1, 2, 2, 3, 3, 3, 3, 3, 1, 3, 3, 1, 2, 3, 1, 1};
+int			g_dir[17] = {T_DIR_SIZE,
+	4, 4, 4, 4, 4, 4, 4, 4, 2, 2, 2, 2, 4, 2, 2, 4};
+int			g_num[17] = {NUM_ARG, 1, 2, 2,
+	3, 3, 3, 3, 3, 1, 3, 3, 1, 2, 3, 1, 1};
 
-int 		s(int t, int op)
+int			s(int t, int op)
 {
 	if (t == REG)
 		return (1);
@@ -26,7 +28,7 @@ int 		s(int t, int op)
 	return (0);
 }
 
-int 		choose_type(char tmp)
+int			choose_type(char tmp)
 {
 	if (tmp == REG)
 		return (REG);
@@ -37,12 +39,12 @@ int 		choose_type(char tmp)
 	return (0);
 }
 
-void		set_types(int	*t, unsigned char types)
+void		set_types(int *t, unsigned char types)
 {
-	int 	i;
-	int 	j;
-	int 	k;
-	char 	tmp;
+	int		i;
+	int		j;
+	int		k;
+	char	tmp;
 
 	k = 0;
 	i = 8;
@@ -66,8 +68,8 @@ void		set_types(int	*t, unsigned char types)
 
 void		find_step(t_cursor *c, t_o *o)
 {
-	int 	step;
-	int 	i;
+	int		step;
+	int		i;
 
 	i = -1;
 	step = 0;
@@ -86,57 +88,4 @@ void		*free_o(t_o *o)
 	free(o->t);
 	free(o);
 	return (0);
-}
-
-int 		check_args(t_o *o)
-{
-	int 	i;
-
-	i = -1;
-	while (++i < 3)
-	{
-		if (o->t[i] == REG)
-		{
-			--o->x[i];
-			if (!(o->x[i] >= 0 && o->x[i] < 16))
-				return (0);
-		}
-	}
-	return (1);
-}
-
-int 		check_num(t_cursor *c, t_o *o)
-{
-	if (g_num[c->op] == 1 && !o->t[0])
-		return (0);
-	if (g_num[c->op] == 2 && (!o->t[0] || !o->t[1]))
-		return (0);
-	if (g_num[c->op] == 3 && (!o->t[0] || !o->t[1] || !o->t[2]))
-		return (0);
-	return (1);
-}
-
-t_o 		*manage_type(t_main *m, t_cursor *c)
-{
-	t_o				*o;
-	unsigned char	types;
-
-	types = m->field[c_p(c->pos + 1)];
-	if (!(o = ft_memalloc(sizeof(t_o))))
-		return (0);
-	if (!(o->t = ft_memalloc(sizeof(int) * 3)))
-		return (free_o(o));
-	if (!(o->s = ft_memalloc(sizeof(int) * 3)))
-		return (free_o(o));
-	if (!(o->x = ft_memalloc(sizeof(int) * 3)))
-		return (free_o(o));
-	set_types(o->t, types);
-	find_step(c, o);
-	get_args(m, c, o);
-	if (!(check_args(o)) || !check_num(c, o))
-	{
-		c->pos = c_p(c->pos + o->step);
-		return (free_o(o));
-	}
-	return (o);
 }
