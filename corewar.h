@@ -14,7 +14,7 @@
 # define _COREWAR_H
 
 # include "op.h"
-# include "libft/libft.h"
+# include "libft_cor/libft.h"
 # include <unistd.h>
 # include <fcntl.h>
 # include <stdio.h>
