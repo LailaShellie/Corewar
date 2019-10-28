@@ -26,7 +26,7 @@ void		do_aff(t_main *m, t_cursor *c, t_o *o)
 	if (o->t[0] == REG)
 	{
 		get_reg(c, o);
-		if (m->v_flag)
+		if (AFF_OP)
 			ft_putchar((char)o->x[0]);
 	}
 	c->op = 0;

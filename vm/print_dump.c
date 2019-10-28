@@ -38,7 +38,7 @@ void		print_hex2(unsigned char octet, int i)
 	char	*c;
 
 	c = "0123456789abcdef";
-	if (i && i % 64 == 0)
+	if (i && i % DUMP_LEN == 0)
 	{
 		write(1, "\n", 1);
 		print_hex1(i);

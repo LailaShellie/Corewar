@@ -62,7 +62,7 @@ void		get_ind(t_main *m, t_cursor *c, t_o *o)
 		if (o->t[i] == IND)
 		{
 			if (c->op == LLD)
-				o->x[i] = read_mem(m->field, c->pos + o->x[i], 2);
+				o->x[i] = read_mem(m->field, c->pos + o->x[i], LLD_READ_SIZE);
 			else
 				o->x[i] = read_mem(m->field, c->pos + o->x[i] % IDX_MOD, 4);
 		}

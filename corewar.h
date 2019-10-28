@@ -33,6 +33,9 @@
 # define NO_NULL "No null bytes"
 # define INV_CHAP_SIZE "Too big champion"
 
+# define AFF_OP 1
+# define LLD_READ_SIZE 2
+# define DUMP_LEN 32
 # define LIVE 1
 # define LD 2
 # define ST 3
