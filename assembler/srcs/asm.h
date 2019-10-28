@@ -13,9 +13,9 @@
 #ifndef ASM_H
 # define ASM_H
 
-# include "../../libft/includes/libft.h"
-# include "../../libft/includes/get_next_line.h"
-# include "../../libft/includes/ft_printf.h"
+# include "../../libft_asm/includes/libft.h"
+# include "../../libft_asm/includes/get_next_line.h"
+# include "../../libft_asm/includes/ft_printf.h"
 # include "asm_ops.h"
 # include "op.h"
 

@@ -10,40 +10,44 @@
 #                                                                              #
 # **************************************************************************** #
 
-SRC1 = error.c parse.c read_files.c vm_main.c start_game.c cursor.c print_dump.c check_cursors.c fight.c do_op.c live_forks_zjmp.c \
-		players.c type_byte.c get_args.c manage_type.c
+SRC_COR = error.c parse.c read_files.c vm_main.c start_game.c cursor.c print_dump.c check_cursors.c fight.c do_op.c live_forks_zjmp.c \
+		players.c type_byte.c get_args.c manage_type.c ops1.c ops2.c
 
-SRC2 = ops1.c ops2.c
+OBJ_COR = $(SRC_COR:.c=.o)
 
-OBJ1 = $(SRC1:.c=.o)
+SRC_ASM = asm.c into_bytecode.c create_file.c free.c init_data.c lexical_check.c champ_data.c process.c syntax_check.c support.c
 
-OBJ2 = $(SRC2:.c=.o)
+OBJ_ASM = $(SRC_ASM:.c=.o)
 
 NAME = corewar
 
 ASM = asm
 
-LIB = libft/libft.a
+LIB_C = libft_cor/libft.a
+LIB_A = libft_asm/libft.a
 
-all: $(NAME) $(ASM)
+all: $(COR) $(ASM)
 
-$(NAME): $(LIB) $(OBJ1) $(OBJ2)
-	@gcc -Wall -Wextra -Werror -o $(NAME) $(LIB) $(OBJ1) $(OBJ2)
-$(ASM):
-	make -C ./assembler/assembler
-$(LIB):
-	@make -C ./libft
-%.o: vm/%.c corewar.h
+$(COR): $(LIB_C) $(OBJ_COR)
+	@gcc -Wall -Wextra -Werror -o $(COR) $(LIB_C) $(OBJ_COR)
+$(ASM): $(LIB_A) $(OBJ_ASM)
+	@gcc -Wall -Wextra -Werror -o $(ASM) $(LIB_A) $(OBJ_ASM)
+$(LIB_C):
+	@make -C ./libft_cor
+$(LIB_A):
+	@make -C ./libft_asm
+$(OBJ_COR) :%.o: vm/%.c corewar.h
 	@gcc -c -I corewar.h $<
-%.o: vm/ops/%.c corewar.h
-	@gcc -c -I corewar.h $<
+$(OBJ_ASM) :%.o: assembler/srcs/%.c assembler/srcs/asm.h assembler/srcs/asm_ops.h assembler/srcs/op.h
+	@gcc -c -I assembler/srcs/asm.h $<
 clean:
-	@make clean -C ./libft
-	@make clean -C ./assembler/assembler
-	@rm -rf $(OBJ1) $(OBJ2)
+	@make clean -C ./libft_asm
+	@make clean -C ./libft_cor
+	@rm -rf $(OBJ_COR)
+	@rm -rf $(OBJ_ASM)
 fclean: clean
-	@make fclean -C ./assembler/assembler
-	@make fclean -C ./libft
-	@rm -rf $(NAME)
+	@make fclean -C ./libft_asm
+	@make fclean -C ./libft_cor
+	@rm -rf $(COR)
 	@rm -rf $(ASM)
 re: fclean all
