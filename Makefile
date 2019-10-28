@@ -21,12 +21,16 @@ OBJ2 = $(SRC2:.c=.o)
 
 NAME = corewar
 
+ASM = asm
+
 LIB = libft/libft.a
 
-all: $(NAME)
+all: $(NAME) $(ASM)
 
 $(NAME): $(LIB) $(OBJ1) $(OBJ2)
 	@gcc -Wall -Wextra -Werror -o $(NAME) $(LIB) $(OBJ1) $(OBJ2)
+$(ASM):
+	make -C ./assembler/assembler
 $(LIB):
 	@make -C ./libft
 %.o: vm/%.c corewar.h
@@ -35,8 +39,11 @@ $(LIB):
 	@gcc -c -I corewar.h $<
 clean:
 	@make clean -C ./libft
+	@make clean -C ./assembler/assembler
 	@rm -rf $(OBJ1) $(OBJ2)
 fclean: clean
+	@make fclean -C ./assembler/assembler
 	@make fclean -C ./libft
 	@rm -rf $(NAME)
+	@rm -rf $(ASM)
 re: fclean all
