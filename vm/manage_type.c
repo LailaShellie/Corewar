@@ -26,6 +26,17 @@ int			s(int t, int op)
 	return (0);
 }
 
+int			is_player_num(int i, t_player *p)
+{
+	while (p)
+	{
+		if (p->num + 1 == ft_abs(i))
+			return (1);
+		p = p->next;
+	}
+	return (0);
+}
+
 void		*free_o(t_o *o)
 {
 	free(o->x);

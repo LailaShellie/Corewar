@@ -47,12 +47,8 @@ void			do_live(t_main *m, t_cursor *c)
 	t_dir = *((int *)dir);
 	++m->live_num;
 	c->last_live_cycle = m->total_cycle;
-	if (t_dir < 0)
-	{
-		t_dir = ft_abs(t_dir);
-		if (t_dir > 0 && t_dir <= m->num_of_players)
-			m->last_player_live = t_dir;
-	}
+	if (t_dir < 0 && is_player_num(t_dir, m->player))
+		m->last_player_live = ft_abs(t_dir);
 	c->op = 0;
 	c->pos = c_p(c->pos + g_live[T_DIR_SIZE] + 1);
 }
