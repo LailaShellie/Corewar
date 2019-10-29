@@ -24,7 +24,7 @@ int		get_size(t_player *player, int fd)
 	while (++i < 4)
 		size[i] = buf[3 - i];
 	player->size = *((int *)size);
-	if (player->size > CHAMP_MAX_SIZE)
+	if (player->size <= 0 || player->size > CHAMP_MAX_SIZE)
 		return (ft_error(INV_CHAP_SIZE));
 	return (1);
 }
