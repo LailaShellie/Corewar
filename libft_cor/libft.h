@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libft_asm.h                                            :+:      :+:    :+:   */
+/*   libft_cor.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lshellie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -98,7 +98,7 @@ unsigned long int	ft_fast_bit_pow(unsigned long int a,
 		unsigned long int b);
 int					get_next_line(const int fd, char **line);
 int					ft_abs(int a);
-char 				*ft_strndup(const char *s1, int n);
-char 				*ft_strnjoin(char const *s1, char const *s2, int n);
+char				*ft_strndup(const char *s1, int n);
+char				*ft_strnjoin(char const *s1, char const *s2, int n);
 
 #endif

@@ -51,7 +51,7 @@ static char	*wordcount(char const *str, char c)
 		part2[count++] = *str;
 		str++;
 	}
-	part2[count] = '\n';/////////
+	part2[count] = '\n';
 	return (part2);
 }
 

@@ -21,6 +21,5 @@ void		print_error(char *message)
 		ft_putendl_fd(message, 2);
 	else
 		perror(message);
-	// ft_putstr_fd(EOC, 2);
 	exit(1);
 }

@@ -12,7 +12,7 @@
 
 #include "asm.h"
 
-void		error(t_ass *d_asm, char *str, t_tkn *tkn, int fl)
+void						error(t_ass *d_asm, char *str, t_tkn *tkn, int fl)
 {
 	ft_printf("----------------------------------------\n");
 	ft_printf("/%s\\\n", str);
@@ -25,50 +25,44 @@ void		error(t_ass *d_asm, char *str, t_tkn *tkn, int fl)
 	exit(EXIT_FAILURE);
 }
 
-void		skip_spaces(t_ass *d_asm, char *line)
+void						skip_spaces(t_ass *d_asm, char *line)
 {
 	while (line[J] == ' ' || line[J] == '\t')
 		J++;
 }
 
-void		skip_comm(t_ass *d_asm, char *line)
+void						skip_comm(t_ass *d_asm, char *line)
 {
 	if (line[J] == COMMENT_CHAR || line[J] == ALT_COMMENT_CHAR)
 		while (line[J] && line[J] != '\n')
 			J++;
 }
 
-int32_t		ft_atoi_size(const char *str, uint8_t size)
+long long					ft_atoi_size(const char *str, uint8_t size)
 {
-	int				neg;
-	int				i;
-	int64_t			num;
+	int						neg;
+	int						i;
+	unsigned long long		num;
+	int						h;
 
-	i = 0;
-	neg = 0;
+	sila(str, &i, &neg, &h);
 	num = 0;
-	while (str[i] == ' ' || str[i] == '\n' || str[i] == '\t')
-		i++;
-	if (str[i] == '-')
-		neg = 1;
-	if ((str[i] == '-') || (str[i] == '+'))
-		i++;
 	while (str[i] >= 48 && str[i] <= 57)
 	{
 		num *= 10;
 		num += ((int)str[i] - 48);
 		i++;
 	}
+	if ((num > INT64_MAX || nbrlen(num, neg)
+		!= (ft_strlen(str) - h)) && num != 0)
+		num = neg ? 0 : INT64_MAX;
 	num = (neg == 1 ? -num : num);
-	size == 1 ? (num = (uint8_t)num) : 1;
-	size == 2 ? (num = (int16_t)num) : 1;
-	size == 4 ? (num = (int32_t)num) : 1;
 	return (num);
 }
 
-int			check_reg(char *line, int len)
+int							check_reg(char *line, int len)
 {
-	int	i;
+	int		i;
 
 	i = 0;
 	if ((len == 2 || len == 3) && line[i] == 'r')

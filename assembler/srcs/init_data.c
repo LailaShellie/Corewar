@@ -28,21 +28,6 @@ void			add_token(t_ass *d_asm, t_type type)
 	d_asm->tkn = new;
 }
 
-static void		lable_duplicates(t_ass *d_asm)
-{
-	char	*origin;
-	t_lbl	*temp;
-
-	origin = d_asm->lbl->locat->cont;
-	temp = d_asm->lbl->next;
-	while (temp)
-	{
-		if (ft_strequ(origin, temp->locat->cont))
-			error(d_asm, LBL_NAME, temp->locat, 2);
-		temp = temp->next;
-	}
-}
-
 void			add_label(t_ass *d_asm)
 {
 	t_lbl	*new;
@@ -57,5 +42,44 @@ void			add_label(t_ass *d_asm)
 		d_asm->lbl->prev = new;
 	new->next = d_asm->lbl;
 	d_asm->lbl = new;
-	lable_duplicates(d_asm);
+}
+
+int				nbrlen(unsigned long long num, int neg)
+{
+	int i;
+
+	i = num == 0 ? 1 : 0;
+	while (num)
+	{
+		i++;
+		num /= 10;
+	}
+	if (neg)
+		i++;
+	return (i);
+}
+
+void			sila(const char *str, int *i, int *neg, int *h)
+{
+	int		neg1;
+	int		i1;
+	int		h1;
+
+	i1 = 0;
+	neg1 = 0;
+	h1 = 0;
+	while (str[i1] == ' ' || str[i1] == '\n' || str[i1] == '\t')
+		i1++;
+	if (str[i1] == '-')
+		neg1 = 1;
+	if ((str[i1] == '-') || (str[i1] == '+'))
+		i1++;
+	while (str[i1] == '0')
+	{
+		h1++;
+		i1++;
+	}
+	*i = i1;
+	*neg = neg1;
+	*h = h1;
 }

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libft_asm.h                                            :+:      :+:    :+:   */
+/*   libft_asm.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: blanna <blanna@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -125,8 +125,8 @@ int					ft_min(int a, int b);
 int					ft_findchar(char *str, int c);
 
 int					ft_catpro(char **dest, char *src);
-int						ft_catarg(char **dest, char *src);
-int						ft_strmerge(char **dest, char **srcs);
-void		print_error(char *message);
+int					ft_catarg(char **dest, char *src);
+int					ft_strmerge(char **dest, char **srcs);
+void				print_error(char *message);
 
 #endif

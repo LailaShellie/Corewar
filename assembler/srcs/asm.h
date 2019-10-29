@@ -132,7 +132,9 @@ void					add_token(t_ass *d_asm, t_type type);
 void					error(t_ass *d_asm, char *str, t_tkn *tkn, int fl);
 void					skip_spaces(t_ass	*d_asm, char *line);
 void					skip_comm(t_ass	*d_asm, char *line);
-int32_t					ft_atoi_size(const char *str, uint8_t size);
+long long				ft_atoi_size(const char *str, uint8_t size);
 int						check_reg(char *line, int len);
+int						nbrlen(unsigned long long num, int neg);
+void					sila(const char *str, int *i, int *neg, int *h);
 
 #endif
